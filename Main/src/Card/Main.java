@@ -3,7 +3,7 @@ package Main.src.Card;
 import java.util.Random;
 
 // Card 클래스 정의
-class Card {
+abstract class Card {
     // Enumeration type 정의
     enum Type {a, b, c, d}
     Type type;
@@ -13,20 +13,21 @@ class Card {
     public Card(int value){
     }
     // 랜덤 카드 생성 함수
-    public void randomCard() {
-        Random random = new Random(); 
-        this.type = Type.values()[random.nextInt(4)];
-        this.value = random.nextInt(13) + 1;
-    }
+    public abstract void randomCard();
+    //{
+        //Random random = new Random(); 
+        //this.type = Type.values()[random.nextInt(4)];
+        //this.value = random.nextInt(13) + 1;
+    //}
 
     // 카드 출력 함수
-    public void showCard() {
-        System.out.println("Type: " + type + ", Value: " + value);
-    }
+    public abstract void showCard();
+    public abstract int getValue();
+    public abstract Type getType();
 }
 
 // OneCard 클래스 정의
-class OneCard extends Card {
+class OneCard extends Card implements Comparable<Card>{
     // Enumeration type 재정의
     enum Type {SPADE, DIAMOND, HEART, CLOVER}
     Type type;
@@ -55,10 +56,37 @@ class OneCard extends Card {
         }
         System.out.println("Type: " + type + ", Value: " + valueStr);
     }
+    @Override
+    public int getValue(){
+        return this.value;
+    }
+    
+    @Override
+    public Type getType(){
+        return this.type;
+    }
+    
+    @Override
+    public int compareTo(Card card) {
+        if(this.getValue() > card.getValue() || (this.getValue() == card.getValue() && this.getType().ordinal() < card.getType().ordinal())) {
+            System.out.println("Player 1 is win!");
+        } else if (this.getValue() < card.getValue() || (this.getValue() == card.getValue() &&this.getType().ordinal() > card.getType().ordinal())) {
+            System.out.println("Player 2 is win!");
+        }
+        return 0;
+    }
+
+    @Override
+    public void randomCard() {
+        Random random = new Random();
+        this.type = Type.values()[random.nextInt(3)];
+        this.value = random.nextInt(13) + 1;
+    }
+    
 }
 
 // Uno 클래스 정의
-class Uno extends Card {
+class Uno extends Card implements Comparable<Card>{
     // Enumeration type 재정의
     enum Type {Red, Yellow, Green, Blue}
     Type type;
@@ -69,7 +97,6 @@ class Uno extends Card {
         Random random = new Random();
         this.type = Type.values()[random.nextInt(4)];
     }
-
     // 카드 출력 함수 오버라이드
     @Override
     public void showCard() {
@@ -85,29 +112,44 @@ class Uno extends Card {
         }
         System.out.println("Type: " + type + ", Value: " + valueStr);
     }
+
+    @Override
+    public int compareTo(Card card) {
+        if(this.getValue() > card.getValue() || (this.getValue() == card.getValue() && this.getType().ordinal() < card.getType().ordinal())) {
+            System.out.println("Player 1 is win!");
+        } else if (this.getValue() < card.getValue() || (this.getValue() == card.getValue() &&this.getType().ordinal() > card.getType().ordinal())) {
+            System.out.println("Player 2 is win!");
+        }
+        return 0;
+    }
+    @Override
+    public void randomCard() {
+        Random random = new Random();
+        this.type = Type.values()[random.nextInt(3)];
+        this.value = random.nextInt(13) + 1;
+    }
 }
 
 public class Main {
     public static void main(String[] args) {
-        Card[] cards = new Card[9];
+        //Card[] cards = new Card[9];
         
-        // Card 클래스로부터 3개의 객체 생성 및 출력
-        for (int i = 0; i < 3; i++) {
-            cards[i] = new Card(i);
-            cards[i].randomCard();
-            cards[i].showCard();
-        }
+        OneCard onca1 = new OneCard(0);
+        onca1.randomCard();
         
-        for (int i = 3; i < 6; i++) {
-            cards[i] = new OneCard(i);
-            cards[i].randomCard();
-            cards[i].showCard();
-        }
-        for (int i = 6; i < 9; i++) {
-            cards[i] = new Uno(i);
-            cards[i].randomCard();
-            cards[i].showCard();
-        }
+        OneCard onca2 = new OneCard(0);
+        onca2.randomCard();
+        onca1.compareTo(onca2);
+        onca1.showCard();
+        onca2.showCard();
+
+        Uno uno1 = new Uno(0);
+        Uno uno2 = new Uno(0);
+        uno1.randomCard();
+        uno2.randomCard();
+        uno1.compareTo(uno2);
+        uno1.showCard();
+        uno2.showCard();
     }
 
 }
