@@ -8,22 +8,18 @@ abstract class Card {
     enum Type {a, b, c, d}
     Type type;
     int value;
-
+    
     // 생성자
     public Card(int value){
     }
-    // 랜덤 카드 생성 함수
+    // 랜덤 카드 생성 추상메서드
     public abstract void randomCard();
-    //{
-        //Random random = new Random(); 
-        //this.type = Type.values()[random.nextInt(4)];
-        //this.value = random.nextInt(13) + 1;
-    //}
 
-    // 카드 출력 함수
+    // 카드 출력 관련 추상메서드
     public abstract void showCard();
     public abstract int getValue();
-    public abstract Type getType();
+    public abstract Enum getType();
+    //리턴타입을 Enum으로 하거나 재정의한 열거형Type을 제거해야함
 }
 
 // OneCard 클래스 정의
@@ -31,7 +27,6 @@ class OneCard extends Card implements Comparable<Card>{
     // Enumeration type 재정의
     enum Type {SPADE, DIAMOND, HEART, CLOVER}
     Type type;
-
     // 생성자
     public OneCard(int value) {
         super(value);
@@ -128,11 +123,20 @@ class Uno extends Card implements Comparable<Card>{
         this.type = Type.values()[random.nextInt(3)];
         this.value = random.nextInt(13) + 1;
     }
+    
+    @Override
+    public int getValue(){
+        return this.value;
+    }
+    
+    @Override
+    public Type getType(){
+        return this.type;
+    }
 }
 
 public class Main {
     public static void main(String[] args) {
-        //Card[] cards = new Card[9];
         
         OneCard onca1 = new OneCard(0);
         onca1.randomCard();
