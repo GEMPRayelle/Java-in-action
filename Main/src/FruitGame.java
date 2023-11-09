@@ -31,7 +31,11 @@ public class FruitGame {
                 for (int i = 0; i < answ.length(); i++) {
                     if(solution.charAt(i) == guess.charAt(0)){
                         answ.replace(i, i+1, guess);
-                        count++;
+                        if(answ.charAt(i) != '_'){
+                            count++;
+                        }
+                        if(count == solution.length())
+                            break;
                     }
                 }
                 if(count == solution.length()){
@@ -39,12 +43,7 @@ public class FruitGame {
                     System.out.println("Á¤´ä");
                     break;
                 }
-            }
-            
-                
-
-            
+            }            
         }
-
     }
 }
